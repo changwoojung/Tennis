@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Match Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tennis Match Tracker</h1>
+        
+        <div class="event-info">
+            <p><strong>Date:</strong> Nov 1st (Sat), 2025</p>
+            <p><strong>Venue:</strong> Cedar Park High School</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="doubles">Doubles</button>
+            <button class="tab-btn" data-tab="singles">Singles</button>
+            <button class="tab-btn" data-tab="finals">Finals</button>
+            <button class="tab-btn" data-tab="summary">Summary</button>
+        </div>
+        
+        <div id="doubles" class="tab-content active">
+            <h2>Doubles Matches</h2>
+            <table id="doubles-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Court</th>
+                        <th>Team A</th>
+                        <th>Team B</th>
+                        <th>Score (A:B)</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>07:15–07:45</td>
+                        <td>Court A</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2" selected>Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5" selected>Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 6:0">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>07:15–07:45</td>
+                        <td>Court B</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3" selected>Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4" selected>Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 1:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>07:50–08:20</td>
+                        <td>Court A</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1" selected>Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5" selected>Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 3:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>07:50–08:20</td>
+                        <td>Court B</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2" selected>Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3" selected>Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 3:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>08:25–08:55</td>
+                        <td>Court A</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1" selected>Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4" selected>Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 3:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>08:25–08:55</td>
+                        <td>Court B</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5" selected>Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3" selected>Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 3:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>09:00–09:30</td>
+                        <td>Court A</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1" selected>Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3" selected>Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 3:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>09:00–09:30</td>
+                        <td>Court B</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4" selected>Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2" selected>Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 3:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>09:35–10:05</td>
+                        <td>Court A</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1" selected>Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2" selected>Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 1:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>09:35–10:05</td>
+                        <td>Court B</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4" selected>Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5" selected>Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 1:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="add-doubles-row" class="add-row-btn">Add Match</button>
+        </div>
+        
+        <div id="singles" class="tab-content">
+            <h2>Singles Matches</h2>
+            <table id="singles-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Court</th>
+                        <th>Matchup</th>
+                        <th>Team A</th>
+                        <th>Player A</th>
+                        <th>Team B</th>
+                        <th>Player B</th>
+                        <th>Score (A:B)</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10:20–10:45</td>
+                        <td>Court A</td>
+                        <td class="matchup-description">1st place vs 2nd place</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2" selected>Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3" selected>Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 3:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>10:20–10:45</td>
+                        <td>Court B</td>
+                        <td class="matchup-description">3rd place vs 4th place</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4" selected>Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5" selected>Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 6:2">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>10:50–11:15</td>
+                        <td>Court A</td>
+                        <td class="matchup-description">2nd place vs 3rd place</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3" selected>Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4" selected>Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 1:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>10:50–11:15</td>
+                        <td>Court B</td>
+                        <td class="matchup-description">4th place vs 5th place</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5" selected>Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1" selected>Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 4:6">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>11:20–11:45</td>
+                        <td>Court A</td>
+                        <td class="matchup-description">5th place vs 1st place</td>
+                        <td>
+                            <select class="team-select team-a">
+                                <option value="1" selected>Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <select class="team-select team-b">
+                                <option value="1">Team 1</option>
+                                <option value="2" selected>Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="player-input" placeholder="Player name">
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 6:0">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="add-singles-row" class="add-row-btn">Add Match</button>
+        </div>
+        
+        <div id="finals" class="tab-content">
+            <h2>Final Matches</h2>
+            <p class="info-text">These matches are scheduled after doubles and singles matches are completed, based on the current rankings.</p>
+            
+            <table id="finals-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Court</th>
+                        <th>Matchup</th>
+                        <th>Team A</th>
+                        <th>Team B</th>
+                        <th>Score (A:B)</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12:00–12:30</td>
+                        <td>Court A</td>
+                        <td class="matchup-description">3rd place vs 4th place</td>
+                        <td>
+                            <select class="team-select team-a" disabled>
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3" selected>Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b" disabled>
+                                <option value="1">Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4" selected>Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 6:4">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                    <tr>
+                        <td>12:00–12:30</td>
+                        <td>Court B</td>
+                        <td class="matchup-description">1st place vs 2nd place</td>
+                        <td>
+                            <select class="team-select team-a" disabled>
+                                <option value="1" selected>Team 1</option>
+                                <option value="2">Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="team-select team-b" disabled>
+                                <option value="1">Team 1</option>
+                                <option value="2" selected>Team 2</option>
+                                <option value="3">Team 3</option>
+                                <option value="4">Team 4</option>
+                                <option value="5">Team 5</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="score-input" placeholder="e.g. 6:4">
+                        </td>
+                        <td class="winner-cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button id="update-finals" class="update-btn">Update Final Matches Based on Current Rankings</button>
+        </div>
+        
+        <div id="summary" class="tab-content">
+            <h2>Match Summary</h2>
+            <table id="summary-table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Doubles Points</th>
+                        <th>Singles Points</th>
+                        <th>Total Points</th>
+                        <th>Doubles Game Diff</th>
+                        <th>Doubles Rank</th>
+                        <th>Singles Game Diff</th>
+                        <th>Final Game Diff</th>
+                        <th>Final Rank</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Team 1</td>
+                        <td class="doubles-points"></td>
+                        <td class="singles-points"></td>
+                        <td class="total-points"></td>
+                        <td class="doubles-diff"></td>
+                        <td class="doubles-rank"></td>
+                        <td class="singles-diff"></td>
+                        <td class="final-diff"></td>
+                        <td class="final-rank"></td>
+                    </tr>
+                    <tr>
+                        <td>Team 2</td>
+                        <td class="doubles-points"></td>
+                        <td class="singles-points"></td>
+                        <td class="total-points"></td>
+                        <td class="doubles-diff"></td>
+                        <td class="doubles-rank"></td>
+                        <td class="singles-diff"></td>
+                        <td class="final-diff"></td>
+                        <td class="final-rank"></td>
+                    </tr>
+                    <tr>
+                        <td>Team 3</td>
+                        <td class="doubles-points"></td>
+                        <td class="singles-points"></td>
+                        <td class="total-points"></td>
+                        <td class="doubles-diff"></td>
+                        <td class="doubles-rank"></td>
+                        <td class="singles-diff"></td>
+                        <td class="final-diff"></td>
+                        <td class="final-rank"></td>
+                    </tr>
+                    <tr>
+                        <td>Team 4</td>
+                        <td class="doubles-points"></td>
+                        <td class="singles-points"></td>
+                        <td class="total-points"></td>
+                        <td class="doubles-diff"></td>
+                        <td class="doubles-rank"></td>
+                        <td class="singles-diff"></td>
+                        <td class="final-diff"></td>
+                        <td class="final-rank"></td>
+                    </tr>
+                    <tr>
+                        <td>Team 5</td>
+                        <td class="doubles-points"></td>
+                        <td class="singles-points"></td>
+                        <td class="total-points"></td>
+                        <td class="doubles-diff"></td>
+                        <td class="doubles-rank"></td>
+                        <td class="singles-diff"></td>
+                        <td class="final-diff"></td>
+                        <td class="final-rank"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Doubles Final Ranking</h3>
+            <ol id="doubles-ranking">
+                <!-- Will be populated by JavaScript -->
+            </ol>
+            
+            <h3>Final Ranking</h3>
+            <ol id="final-ranking">
+                <!-- Will be populated by JavaScript -->
+            </ol>
+        </div>
+        
+        <div class="team-info-section">
+            <h2>Team Information</h2>
+            <table id="team-info-table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Player 1</th>
+                        <th>Player 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Team 1</td>
+                        <td>정재원</td>
+                        <td>김희준</td>
+                    </tr>
+                    <tr>
+                        <td>Team 2</td>
+                        <td>함경훈</td>
+                        <td>이성세</td>
+                    </tr>
+                    <tr>
+                        <td>Team 3</td>
+                        <td>정창우</td>
+                        <td>이진규</td>
+                    </tr>
+                    <tr>
+                        <td>Team 4</td>
+                        <td>이일준</td>
+                        <td>이대형</td>
+                    </tr>
+                    <tr>
+                        <td>Team 5</td>
+                        <td>이강환</td>
+                        <td>여정운</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="team-photo-container">
+                <h3>Team Photo</h3>
+                <img src="IMG_6317.JPG" alt="Team Photo" class="team-photo">
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

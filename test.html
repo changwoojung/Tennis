@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Match Tracker - Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .success {
+            color: green;
+        }
+        .failure {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tennis Match Tracker - Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Score Parsing</h2>
+        <button class="test-button" onclick="testScoreParsing()">Run Test</button>
+        <div id="score-parsing-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Winner Calculation</h2>
+        <button class="test-button" onclick="testWinnerCalculation()">Run Test</button>
+        <div id="winner-calculation-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Points Calculation</h2>
+        <button class="test-button" onclick="testPointsCalculation()">Run Test</button>
+        <div id="points-calculation-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Game Differential Calculation</h2>
+        <button class="test-button" onclick="testGameDifferential()">Run Test</button>
+        <div id="game-differential-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 5: Ranking Calculation</h2>
+        <button class="test-button" onclick="testRankingCalculation()">Run Test</button>
+        <div id="ranking-calculation-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 6: Run All Tests</h2>
+        <button class="test-button" onclick="runAllTests()">Run All Tests</button>
+        <div id="all-tests-result" class="test-result"></div>
+    </div>
+    
+    <script>
+        // Test 1: Score Parsing
+        function testScoreParsing() {
+            const resultDiv = document.getElementById('score-parsing-result');
+            let output = '';
+            let allPassed = true;
+            
+            // Test cases
+            const testCases = [
+                { input: '6:0', expected: [6, 0] },
+                { input: '3:6', expected: [3, 6] },
+                { input: '1:6', expected: [1, 6] },
+                { input: 'invalid', expected: null },
+                { input: '6-0', expected: null }
+            ];
+            
+            testCases.forEach((test, index) => {
+                const result = parseScore(test.input);
+                const passed = (result === null && test.expected === null) || 
+                               (result !== null && test.expected !== null && 
+                                result[0] === test.expected[0] && 
+                                result[1] === test.expected[1]);
+                
+                output += `Test case ${index + 1}: ${passed ? 'PASSED' : 'FAILED'}\n`;
+                output += `  Input: "${test.input}"\n`;
+                output += `  Expected: ${test.expected === null ? 'null' : `[${test.expected[0]}, ${test.expected[1]}]`}\n`;
+                output += `  Actual: ${result === null ? 'null' : `[${result[0]}, ${result[1]}]`}\n\n`;
+                
+                if (!passed) allPassed = false;
+            });
+            
+            output += allPassed ? 'All score parsing tests PASSED!' : 'Some score parsing tests FAILED!';
+            resultDiv.innerHTML = output;
+            resultDiv.className = allPassed ? 'test-result success' : 'test-result failure';
+        }
+        
+        // Test 2: Winner Calculation
+        function testWinnerCalculation() {
+            const resultDiv = document.getElementById('winner-calculation-result');
+            let output = '';
+            let allPassed = true;
+            
+            // Test cases
+            const testCases = [
+                { scoreA: 6, scoreB: 0, teamA: '1', teamB: '2', expected: '1' },
+                { scoreA: 3, scoreB: 6, teamA: '3', teamB: '4', expected: '4' },
+                { scoreA: 6, scoreB: 6, teamA: '1', teamB: '5', expected: 'Tie' }
+            ];
+            
+            testCases.forEach((test, index) => {
+                const winner = determineWinner(test.scoreA, test.scoreB, test.teamA, test.teamB);
+                const passed = winner === test.expected;
+                
+                output += `Test case ${index + 1}: ${passed ? 'PASSED' : 'FAILED'}\n`;
+                output += `  Scores: Team ${test.teamA} (${test.scoreA}) vs Team ${test.teamB} (${test.scoreB})\n`;
+                output += `  Expected winner: ${test.expected}\n`;
+                output += `  Actual winner: ${winner}\n\n`;
+                
+                if (!passed) allPassed = false;
+            });
+            
+            output += allPassed ? 'All winner calculation tests PASSED!' : 'Some winner calculation tests FAILED!';
+            resultDiv.innerHTML = output;
+            resultDiv.className = allPassed ? 'test-result success' : 'test-result failure';
+        }
+        
+        // Test 3: Points Calculation
+        function testPointsCalculation() {
+            const resultDiv = document.getElementById('points-calculation-result');
+            let output = '';
+            let allPassed = true;
+            
+            // Test cases for doubles (2 points for win)
+            const doublesTestCases = [
+                { scoreA: 6, scoreB: 0, teamA: '1', teamB: '2', expectedA: 2, expectedB: 0 },
+                { scoreA: 3, scoreB: 6, teamA: '3', teamB: '4', expectedA: 0, expectedB: 2 },
+                { scoreA: 6, scoreB: 6, teamA: '1', teamB: '5', expectedA: 1, expectedB: 1 }
+            ];
+            
+            // Test cases for singles (1 point for win)
+            const singlesTestCases = [
+                { scoreA: 6, scoreB: 0, teamA: '1', teamB: '2', expectedA: 1, expectedB: 0 },
+                { scoreA: 3, scoreB: 6, teamA: '3', teamB: '4', expectedA: 0, expectedB: 1 },
+                { scoreA: 6, scoreB: 6, teamA: '1', teamB: '5', expectedA: 0.5, expectedB: 0.5 }
+            ];
+            
+            output += "DOUBLES POINTS TESTS:\n";
+            doublesTestCases.forEach((test, index) => {
+                const pointsA = calculatePoints(test.scoreA, test.scoreB, 'doubles', true);
+                const pointsB = calculatePoints(test.scoreB, test.scoreA, 'doubles', false);
+                const passedA = pointsA === test.expectedA;
+                const passedB = pointsB === test.expectedB;
+                
+                output += `Test case ${index + 1}: ${passedA && passedB ? 'PASSED' : 'FAILED'}\n`;
+                output += `  Scores: Team ${test.teamA} (${test.scoreA}) vs Team ${test.teamB} (${test.scoreB})\n`;
+                output += `  Expected points: Team ${test.teamA} = ${test.expectedA}, Team ${test.teamB} = ${test.expectedB}\n`;
+                output += `  Actual points: Team ${test.teamA} = ${pointsA}, Team ${test.teamB} = ${pointsB}\n\n`;
+                
+                if (!passedA || !passedB) allPassed = false;
+            });
+            
+            output += "SINGLES POINTS TESTS:\n";
+            singlesTestCases.forEach((test, index) => {
+                const pointsA = calculatePoints(test.scoreA, test.scoreB, 'singles', true);
+                const pointsB = calculatePoints(test.scoreB, test.scoreA, 'singles', false);
+                const passedA = pointsA === test.expectedA;
+                const passedB = pointsB === test.expectedB;
+                
+                output += `Test case ${index + 1}: ${passedA && passedB ? 'PASSED' : 'FAILED'}\n`;
+                output += `  Scores: Team ${test.teamA} (${test.scoreA}) vs Team ${test.teamB} (${test.scoreB})\n`;
+                output += `  Expected points: Team ${test.teamA} = ${test.expectedA}, Team ${test.teamB} = ${test.expectedB}\n`;
+                output += `  Actual points: Team ${test.teamA} = ${pointsA}, Team ${test.teamB} = ${pointsB}\n\n`;
+                
+                if (!passedA || !passedB) allPassed = false;
+            });
+            
+            output += allPassed ? 'All points calculation tests PASSED!' : 'Some points calculation tests FAILED!';
+            resultDiv.innerHTML = output;
+            resultDiv.className = allPassed ? 'test-result success' : 'test-result failure';
+        }
+        
+        // Test 4: Game Differential Calculation
+        function testGameDifferential() {
+            const resultDiv = document.getElementById('game-differential-result');
+            let output = '';
+            let allPassed = true;
+            
+            // Test cases
+            const testCases = [
+                { 
+                    matches: [
+                        { teamA: '1', teamB: '2', scoreA: 6, scoreB: 0 },
+                        { teamA: '1', teamB: '3', scoreA: 3, scoreB: 6 }
+                    ],
+                    expected: { '1': 3, '2': -6, '3': 3 }
+                },
+                { 
+                    matches: [
+                        { teamA: '2', teamB: '4', scoreA: 6, scoreB: 3 },
+                        { teamA: '3', teamB: '5', scoreA: 1, scoreB: 6 },
+                        { teamA: '1', teamB: '4', scoreA: 6, scoreB: 6 }
+                    ],
+                    expected: { '1': 0, '2': 3, '3': -5, '4': -3, '5': 5 }
+                }
+            ];
+            
+            testCases.forEach((test, index) => {
+                const results = calculateGameDifferentials(test.matches);
+                let passed = true;
+                
+                output += `Test case ${index + 1}:\n`;
+                
+                for (const team in test.expected) {
+                    const expectedDiff = test.expected[team];
+                    const actualDiff = results[team] || 0;
+                    const teamPassed = expectedDiff === actualDiff;
+                    
+                    output += `  Team ${team}: ${teamPassed ? 'PASSED' : 'FAILED'}\n`;
+                    output += `    Expected diff: ${expectedDiff}\n`;
+                    output += `    Actual diff: ${actualDiff}\n\n`;
+                    
+                    if (!teamPassed) passed = false;
+                }
+                
+                if (!passed) allPassed = false;
+            });
+            
+            output += allPassed ? 'All game differential tests PASSED!' : 'Some game differential tests FAILED!';
+            resultDiv.innerHTML = output;
+            resultDiv.className = allPassed ? 'test-result success' : 'test-result failure';
+        }
+        
+        // Test 5: Ranking Calculation
+        function testRankingCalculation() {
+            const resultDiv = document.getElementById('ranking-calculation-result');
+            let output = '';
+            let allPassed = true;
+            
+            // Test cases
+            const testCases = [
+                { 
+                    teams: {
+                        '1': { points: 6, diff: 5 },
+                        '2': { points: 6, diff: 3 },
+                        '3': { points: 4, diff: 0 },
+                        '4': { points: 2, diff: -3 },
+                        '5': { points: 2, diff: -5 }
+                    },
+                    expectedRanking: ['1', '2', '3', '4', '5']
+                },
+                { 
+                    teams: {
+                        '1': { points: 4, diff: 2 },
+                        '2': { points: 6, diff: 8 },
+                        '3': { points: 6, diff: 4 },
+                        '4': { points: 4, diff: -6 },
+                        '5': { points: 0, diff: -8 }
+                    },
+                    expectedRanking: ['2', '3', '1', '4', '5']
+                }
+            ];
+            
+            testCases.forEach((test, index) => {
+                const ranking = calculateRanking(test.teams);
+                const passed = arraysEqual(ranking, test.expectedRanking);
+                
+                output += `Test case ${index + 1}: ${passed ? 'PASSED' : 'FAILED'}\n`;
+                output += `  Expected ranking: [${test.expectedRanking.join(', ')}]\n`;
+                output += `  Actual ranking: [${ranking.join(', ')}]\n\n`;
+                
+                if (!passed) allPassed = false;
+            });
+            
+            output += allPassed ? 'All ranking calculation tests PASSED!' : 'Some ranking calculation tests FAILED!';
+            resultDiv.innerHTML = output;
+            resultDiv.className = allPassed ? 'test-result success' : 'test-result failure';
+        }
+        
+        // Run all tests
+        function runAllTests() {
+            testScoreParsing();
+            testWinnerCalculation();
+            testPointsCalculation();
+            testGameDifferential();
+            testRankingCalculation();
+            
+            const allTestsResult = document.getElementById('all-tests-result');
+            const individualResults = document.querySelectorAll('.test-result:not(#all-tests-result)');
+            
+            let allPassed = true;
+            for (const result of individualResults) {
+                if (result.className.includes('failure')) {
+                    allPassed = false;
+                    break;
+                }
+            }
+            
+            allTestsResult.innerHTML = allPassed ? 'All tests PASSED!' : 'Some tests FAILED!';
+            allTestsResult.className = allPassed ? 'test-result success' : 'test-result failure';
+        }
+        
+        // Helper functions for tests
+        function parseScore(scoreStr) {
+            if (!scoreStr || scoreStr.trim() === '') return null;
+            
+            const scoreParts = scoreStr.split(':');
+            if (scoreParts.length !== 2) return null;
+            
+            const scoreA = parseInt(scoreParts[0]);
+            const scoreB = parseInt(scoreParts[1]);
+            
+            if (isNaN(scoreA) || isNaN(scoreB)) return null;
+            
+            return [scoreA, scoreB];
+        }
+        
+        function determineWinner(scoreA, scoreB, teamA, teamB) {
+            if (scoreA > scoreB) {
+                return teamA;
+            } else if (scoreB > scoreA) {
+                return teamB;
+            } else {
+                return 'Tie';
+            }
+        }
+        
+        function calculatePoints(myScore, opponentScore, matchType, isTeamA) {
+            if (matchType === 'doubles') {
+                // 2 points for a win in doubles
+                if (myScore > opponentScore) {
+                    return 2;
+                } else if (myScore === opponentScore) {
+                    return 1; // 1 point each for a tie
+                } else {
+                    return 0;
+                }
+            } else { // singles
+                // 1 point for a win in singles
+                if (myScore > opponentScore) {
+                    return 1;
+                } else if (myScore === opponentScore) {
+                    return 0.5; // 0.5 points each for a tie
+                } else {
+                    return 0;
+                }
+            }
+        }
+        
+        function calculateGameDifferentials(matches) {
+            const results = {};
+            
+            matches.forEach(match => {
+                // Initialize if not exists
+                if (!results[match.teamA]) results[match.teamA] = 0;
+                if (!results[match.teamB]) results[match.teamB] = 0;
+                
+                // Update differentials
+                results[match.teamA] += match.scoreA - match.scoreB;
+                results[match.teamB] += match.scoreB - match.scoreA;
+            });
+            
+            return results;
+        }
+        
+        function calculateRanking(teams) {
+            const teamIds = Object.keys(teams);
+            
+            return teamIds.sort((a, b) => {
+                // First by points
+                if (teams[b].points !== teams[a].points) {
+                    return teams[b].points - teams[a].points;
+                }
+                // Then by game differential
+                return teams[b].diff - teams[a].diff;
+            });
+        }
+        
+        function arraysEqual(a, b) {
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
