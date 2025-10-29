@@ -651,6 +651,27 @@
             </ol>
         </div>
         
+        <div class="photo-gallery-section">
+            <h2>Photo Gallery</h2>
+            <div class="photo-upload-container">
+                <input type="file" id="photo-upload" accept="image/*" multiple>
+                <label for="photo-upload" class="upload-btn">Upload Photos</label>
+            </div>
+            <div class="gallery-container">
+                <div class="thumbnails-container" id="thumbnails-container">
+                    <!-- Thumbnails will be added here dynamically -->
+                </div>
+                <div class="fullsize-photo-container" id="fullsize-photo-container">
+                    <div class="nav-arrow left-arrow" id="prev-photo"><</div>
+                    <div class="photo-display" id="photo-display">
+                        <!-- Full-size photo will be displayed here -->
+                    </div>
+                    <div class="nav-arrow right-arrow" id="next-photo">></div>
+                    <div class="close-btn" id="close-photo">×</div>
+                </div>
+            </div>
+        </div>
+        
         <div class="team-info-section">
             <h2>Team Information</h2>
             <table id="team-info-table">

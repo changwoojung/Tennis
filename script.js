@@ -16,7 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Load match data from local storage
+    loadMatchData();
+    
     // Load player names from local storage
+    // Note: This is now redundant as player names are included in match data,
+    // but keeping for backward compatibility
     loadPlayerNames();
     
     // Add event listeners for score inputs
@@ -51,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (updateFinalsBtn) {
         updateFinalsBtn.addEventListener('click', updateFinalMatches);
     }
+    
+    // Initialize photo gallery
+    initPhotoGallery();
 });
 
 // Function to update final matches based on current rankings
@@ -308,6 +316,199 @@ function updateResults() {
     if (updateFinalsBtn) {
         updateFinalsBtn.disabled = !hasEnoughDataForFinals(results);
     }
+    
+    // Save match data to localStorage
+    saveMatchData();
+}
+
+// Function to save match data to localStorage
+function saveMatchData() {
+    // Save doubles matches
+    const doublesData = getTableData('doubles-table');
+    
+    // Save singles matches
+    const singlesData = getTableData('singles-table');
+    
+    // Save finals matches
+    const finalsData = getTableData('finals-table');
+    
+    // Combine all data
+    const matchData = {
+        doubles: doublesData,
+        singles: singlesData,
+        finals: finalsData,
+        timestamp: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    try {
+        localStorage.setItem('tennisMatchData', JSON.stringify(matchData));
+        console.log('Match data saved successfully');
+    } catch (e) {
+        console.error('Error saving match data to localStorage:', e);
+    }
+}
+
+// Function to extract data from a table
+function getTableData(tableId) {
+    const tableData = [];
+    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    
+    rows.forEach(row => {
+        const rowData = {};
+        
+        // Get time
+        const timeCell = row.querySelector('td:first-child');
+        if (timeCell) {
+            const timeInput = timeCell.querySelector('input');
+            rowData.time = timeInput ? timeInput.value : timeCell.textContent.trim();
+        }
+        
+        // Get court
+        const courtCell = row.querySelector('td:nth-child(2)');
+        if (courtCell) {
+            const courtInput = courtCell.querySelector('input');
+            rowData.court = courtInput ? courtInput.value : courtCell.textContent.trim();
+        }
+        
+        // Get matchup description if it exists
+        const matchupCell = row.querySelector('.matchup-description');
+        if (matchupCell) {
+            rowData.matchup = matchupCell.textContent.trim();
+        }
+        
+        // Get team selections
+        const teamASelect = row.querySelector('.team-a');
+        const teamBSelect = row.querySelector('.team-b');
+        if (teamASelect) rowData.teamA = teamASelect.value;
+        if (teamBSelect) rowData.teamB = teamBSelect.value;
+        
+        // Get player names if they exist
+        const playerInputs = row.querySelectorAll('.player-input');
+        if (playerInputs.length >= 1) rowData.playerA = playerInputs[0].value;
+        if (playerInputs.length >= 2) rowData.playerB = playerInputs[1].value;
+        
+        // Get score
+        const scoreInput = row.querySelector('.score-input');
+        if (scoreInput) rowData.score = scoreInput.value;
+        
+        // Get winner
+        const winnerCell = row.querySelector('.winner-cell');
+        if (winnerCell) rowData.winner = winnerCell.textContent.trim();
+        
+        tableData.push(rowData);
+    });
+    
+    return tableData;
+}
+
+// Function to load match data from localStorage
+function loadMatchData() {
+    try {
+        const savedData = localStorage.getItem('tennisMatchData');
+        if (!savedData) {
+            console.log('No saved match data found');
+            return;
+        }
+        
+        const matchData = JSON.parse(savedData);
+        console.log('Loading match data from:', matchData.timestamp);
+        
+        // Load doubles matches
+        if (matchData.doubles) {
+            populateTableData('doubles-table', matchData.doubles);
+        }
+        
+        // Load singles matches
+        if (matchData.singles) {
+            populateTableData('singles-table', matchData.singles);
+        }
+        
+        // Load finals matches
+        if (matchData.finals) {
+            populateTableData('finals-table', matchData.finals);
+        }
+        
+        // Update results after loading data
+        updateResults();
+        
+        console.log('Match data loaded successfully');
+    } catch (e) {
+        console.error('Error loading match data from localStorage:', e);
+    }
+}
+
+// Function to populate a table with saved data
+function populateTableData(tableId, tableData) {
+    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    
+    // Make sure we have enough rows
+    while (rows.length < tableData.length) {
+        if (tableId === 'doubles-table') {
+            addNewRow('doubles-table');
+        } else if (tableId === 'singles-table') {
+            addNewRow('singles-table');
+        } else {
+            // For finals, we don't add new rows
+            break;
+        }
+    }
+    
+    // Get updated rows after possibly adding new ones
+    const updatedRows = document.querySelectorAll(`#${tableId} tbody tr`);
+    
+    // Populate data
+    tableData.forEach((rowData, index) => {
+        if (index >= updatedRows.length) return;
+        
+        const row = updatedRows[index];
+        
+        // Set time
+        if (rowData.time) {
+            const timeCell = row.querySelector('td:first-child');
+            const timeInput = timeCell.querySelector('input');
+            if (timeInput) {
+                timeInput.value = rowData.time;
+            }
+        }
+        
+        // Set court
+        if (rowData.court) {
+            const courtCell = row.querySelector('td:nth-child(2)');
+            const courtInput = courtCell.querySelector('input');
+            if (courtInput) {
+                courtInput.value = rowData.court;
+            }
+        }
+        
+        // Set team selections
+        if (rowData.teamA) {
+            const teamASelect = row.querySelector('.team-a');
+            if (teamASelect) teamASelect.value = rowData.teamA;
+        }
+        
+        if (rowData.teamB) {
+            const teamBSelect = row.querySelector('.team-b');
+            if (teamBSelect) teamBSelect.value = rowData.teamB;
+        }
+        
+        // Set player names
+        if (rowData.playerA) {
+            const playerInputs = row.querySelectorAll('.player-input');
+            if (playerInputs.length >= 1) playerInputs[0].value = rowData.playerA;
+        }
+        
+        if (rowData.playerB) {
+            const playerInputs = row.querySelectorAll('.player-input');
+            if (playerInputs.length >= 2) playerInputs[1].value = rowData.playerB;
+        }
+        
+        // Set score
+        if (rowData.score) {
+            const scoreInput = row.querySelector('.score-input');
+            if (scoreInput) scoreInput.value = rowData.score;
+        }
+    });
 }
 
 // Check if we have enough data to determine final matches
@@ -717,6 +918,177 @@ function setupPlayerNameInputListeners() {
         newInput.addEventListener('input', savePlayerNames);
     });
     console.log(`Set up listeners for ${playerInputs.length} player name inputs`);
+}
+
+// Photo Gallery Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize photo gallery
+    initPhotoGallery();
+});
+
+function initPhotoGallery() {
+    // Get DOM elements
+    const photoUpload = document.getElementById('photo-upload');
+    const thumbnailsContainer = document.getElementById('thumbnails-container');
+    const fullsizeContainer = document.getElementById('fullsize-photo-container');
+    const photoDisplay = document.getElementById('photo-display');
+    const prevButton = document.getElementById('prev-photo');
+    const nextButton = document.getElementById('next-photo');
+    const closeButton = document.getElementById('close-photo');
+    
+    // Photo storage array
+    let photos = [];
+    let currentPhotoIndex = 0;
+    
+    // Load photos from localStorage if available
+    loadPhotosFromStorage();
+    
+    // Event listener for file upload
+    photoUpload.addEventListener('change', handlePhotoUpload);
+    
+    // Event listeners for navigation
+    prevButton.addEventListener('click', showPreviousPhoto);
+    nextButton.addEventListener('click', showNextPhoto);
+    closeButton.addEventListener('click', closeFullsizePhoto);
+    
+    // Close on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeFullsizePhoto();
+        } else if (e.key === 'ArrowLeft') {
+            showPreviousPhoto();
+        } else if (e.key === 'ArrowRight') {
+            showNextPhoto();
+        }
+    });
+    
+    // Handle photo upload
+    function handlePhotoUpload(event) {
+        const files = event.target.files;
+        
+        if (files && files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                // Check if file is an image
+                if (!file.type.match('image.*')) {
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const photoData = e.target.result;
+                    
+                    // Add to photos array
+                    photos.push(photoData);
+                    
+                    // Create thumbnail
+                    createThumbnail(photoData, photos.length - 1);
+                    
+                    // Save to localStorage
+                    savePhotosToStorage();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+    
+    // Create thumbnail element
+    function createThumbnail(photoData, index) {
+        const thumbnail = document.createElement('img');
+        thumbnail.src = photoData;
+        thumbnail.className = 'thumbnail';
+        thumbnail.dataset.index = index;
+        
+        thumbnail.addEventListener('click', function() {
+            showFullsizePhoto(index);
+        });
+        
+        thumbnailsContainer.appendChild(thumbnail);
+    }
+    
+    // Show fullsize photo
+    function showFullsizePhoto(index) {
+        if (index < 0 || index >= photos.length) {
+            return;
+        }
+        
+        currentPhotoIndex = index;
+        
+        // Clear previous photo
+        photoDisplay.innerHTML = '';
+        
+        // Create image element
+        const img = document.createElement('img');
+        img.src = photos[index];
+        
+        // Add to display
+        photoDisplay.appendChild(img);
+        
+        // Show fullsize container
+        fullsizeContainer.classList.add('active');
+    }
+    
+    // Show previous photo
+    function showPreviousPhoto() {
+        if (photos.length === 0) return;
+        
+        let newIndex = currentPhotoIndex - 1;
+        if (newIndex < 0) {
+            newIndex = photos.length - 1;
+        }
+        
+        showFullsizePhoto(newIndex);
+    }
+    
+    // Show next photo
+    function showNextPhoto() {
+        if (photos.length === 0) return;
+        
+        let newIndex = currentPhotoIndex + 1;
+        if (newIndex >= photos.length) {
+            newIndex = 0;
+        }
+        
+        showFullsizePhoto(newIndex);
+    }
+    
+    // Close fullsize photo
+    function closeFullsizePhoto() {
+        fullsizeContainer.classList.remove('active');
+    }
+    
+    // Save photos to localStorage
+    function savePhotosToStorage() {
+        try {
+            localStorage.setItem('tennisPhotos', JSON.stringify(photos));
+        } catch (e) {
+            console.error('Error saving photos to localStorage:', e);
+            // If localStorage is full, we might need to clear some space
+            if (e.name === 'QuotaExceededError') {
+                alert('Storage is full. Some photos may not be saved.');
+            }
+        }
+    }
+    
+    // Load photos from localStorage
+    function loadPhotosFromStorage() {
+        try {
+            const savedPhotos = localStorage.getItem('tennisPhotos');
+            if (savedPhotos) {
+                photos = JSON.parse(savedPhotos);
+                
+                // Create thumbnails for all saved photos
+                photos.forEach((photoData, index) => {
+                    createThumbnail(photoData, index);
+                });
+            }
+        } catch (e) {
+            console.error('Error loading photos from localStorage:', e);
+        }
+    }
 }
 
 // Made with Bob
